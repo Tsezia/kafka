@@ -7,8 +7,6 @@ if __name__ == '__main__':
     broker = 'localhost:9093'
     topic = 'test'
 
-    # Producer configuration
-    # See https://github.com/edenhill/librdkafka/blob/master/CONFIGURATION.md
     conf = {'bootstrap.servers': broker}
 
     # Create Producer instance
@@ -32,7 +30,7 @@ if __name__ == '__main__':
     for line in msg_generator(1000):
         try:
             # Produce line (without newline)
-            p.produce(topic, line.rstrip(), callback=delivery_callback)
+            p.produce(topic, line, callback=delivery_callback)
 
         except BufferError:
             sys.stderr.write('%% Local producer queue is full (%d messages awaiting delivery): try again\n' %

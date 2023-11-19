@@ -1,12 +1,5 @@
 from confluent_kafka import Consumer, KafkaException
 import sys
-import json
-from pprint import pformat
-
-
-def stats_cb(stats_json_str):
-    stats_json = json.loads(stats_json_str)
-    print('\nKAFKA Stats: {}\n'.format(pformat(stats_json)))
 
 
 if __name__ == '__main__':
@@ -40,15 +33,8 @@ if __name__ == '__main__':
                 c.store_offsets(msg)
                 break
             else:
-                # Proper message
-                # sys.stderr.write('%% %s [%d] at offset %d with key %s:\n' %
-                #                  (msg.topic(), msg.partition(), msg.offset(),
-                #                   str(msg.key())))
                 print(msg.value().decode())
                 messages_counter += 1
-                # Store the offset associated with msg to a local cache.
-                # Stored offsets are committed to Kafka by a background thread every 'auto.commit.interval.ms'.
-                # Explicitly storing offsets after processing gives at-least once semantics.
                 c.store_offsets(msg)
 
     except KeyboardInterrupt:
